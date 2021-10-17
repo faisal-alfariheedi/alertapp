@@ -23,26 +23,29 @@ class MainActivity : AppCompatActivity() {
     }
     fun alert(){
         val dialogBuilder = AlertDialog.Builder(this)
-        val input= EditText(this)
-        val but=Button(this)
-        val tv= TextView(this)
+        lateinit var input: EditText
+        dialogBuilder.setCancelable(false)
+        dialogBuilder.setPositiveButton("GO", DialogInterface.OnClickListener {
+                dialog, id ->  act(input.text.toString())
+        })
+
+        val alert = dialogBuilder.create()
+        alert.setTitle("enter something")
+        val vv=this.layoutInflater.inflate(R.layout.alert,null)
+        alert.setView(vv)
+        input= vv.findViewById(R.id.inin)
+        val but=vv.findViewById<Button>(R.id.but2)
+        val tv= vv.findViewById<TextView>(R.id.tv1)
         but.setOnClickListener{
             if(input.text.isNotEmpty())
                 tv.text=input.text
         }
-        dialogBuilder.setCancelable(false)
-        dialogBuilder.setPositiveButton("ADD", DialogInterface.OnClickListener {
-                dialog, id ->  startActivities(arrayOf(Intent(this, ac2::class.java)))
-        })
-            .setNegativeButton("No", DialogInterface.OnClickListener {
-                    dialog, id -> dialog.cancel()
-            })
-        val alert = dialogBuilder.create()
-        alert.setTitle("Enter subreddit name")
-        alert.setView(input)
-        alert.setView(but)
-        alert.setView(tv)
         alert.show()
 
+    }
+    fun act(text: String) {
+        val intent=Intent(this, ac2::class.java)
+        intent.putExtra("nn",text)
+        startActivity(intent);
     }
 }
